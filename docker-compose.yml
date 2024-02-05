@@ -6,7 +6,7 @@ services:
     restart: always
 
     environment:
-      MYSQL_DATABASE: 
+      MYSQL_DATABASE:
       MYSQL_ROOT_PASSWORD:
       MYSQL_USER:
       MYSQL_PASSWORD:
@@ -25,10 +25,7 @@ services:
       retries: 10
 
   post_web_app:
-    image: post_web_app
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: pietrasfilip/post-web-app-backend:1.0
     ports:
       - "8080:8080"
     restart: always
