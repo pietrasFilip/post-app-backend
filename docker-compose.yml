@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mysql_main:
+    image: mysql:latest
+    restart: always
+
+    environment:
+      MYSQL_DATABASE: 
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
+      MYSQL_TCP_PORT: 3308
+    ports:
+      - "3308:3308"
+    expose:
+      - "3308"
+    networks:
+      - post-network
+    volumes:
+      - "mysql_post:/var/lib/mysql"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 10
+
+  post_web_app:
+    image: post_web_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - post-network
+    depends_on:
+      mysql_main:
+        condition: service_healthy
+
+volumes:
+  mysql_post:
+  post_web_app:
+networks:
+  post-network:
