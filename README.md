@@ -30,14 +30,39 @@ To register as vip or instant client, you have to pass correct pin code.
 
 # How to install?
 
-To generate .jar file use:
+First of all fill `application.yml` with your database data.
+Then generate .jar file using:
 ```
 mvn clean package -DskipTests
 ```
 
 # How to run?
 
-After performing above command, run application with docker:
+After performing above command, fill missing data for db inside `docker-compose.yml` and run application with docker:
+```
+docker-compose up -d --build
+```
+
+If you want to use existing image of this application, uncomment this line in `docker-compose.yml`:
+```
+    image: pietrasfilip/post-web-app-backend:1.0
+```
+and comment:
+```
+    image: post_web_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+```
+Then fill database environment variables with:
+```
+    environment:
+      MYSQL_DATABASE: post
+      MYSQL_ROOT_PASSWORD: main
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user1234
+```
+Then run in command line:
 ```
 docker-compose up -d --build
 ```
